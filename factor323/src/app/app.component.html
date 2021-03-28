@@ -1,0 +1,94 @@
+<h2>Exercise: Factor 323</h2>
+<p>Now that we have an overview of how Shor's Algorithm works, let's see how it can <br>
+  be used to quickly factor products of primes! Let's use 323 as an example.</p>
+<p>323, like other public keys used for encryption, is the product of 2 prime numbers. <br>
+  If we figure out either of those primes, we can break the encryption.</p>
+<h3>Step 1: Randomly guess a prime. </h3>
+<p>While we are unlikely to randomly guess a prime factor of 323, we can convert this <br>
+  guess into a much more accurate guess if we're wrong. Select a prime from the drop <br>
+  down menu below to start. </p>
+
+  <div class="dropdown">
+    <button class="dropbtn">Select a Prime!
+      <i class="fa fa-caret-down"></i>
+    </button>
+    <div class="dropdown-content">
+      <div class="row">
+        <div class="column">
+          <button on-click="updatePrime(2)" clickable>2</button>
+          <button on-click="updatePrime(7)" clickable>7</button>
+          <button on-click="updatePrime(17)" clickable>17</button>
+        </div>
+        <div class="column">
+          <button on-click="updatePrime(3)" clickable>3</button>
+          <button on-click="updatePrime(11)" clickable>11</button>
+          <button on-click="updatePrime(19)" clickable>19</button>
+        </div>
+        <div class="column">
+          <button on-click="updatePrime(5)" clickable>5</button>
+          <button on-click="updatePrime(13)" clickable>13</button>
+          <button on-click="updatePrime(23)" clickable>23</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <div [hidden] = "hideCalculateP">
+    <p [hidden] = "guessWorked">
+      This guess divides 323! Congratulations! Try selecting a new prime to <br>
+      see what might happen if your initial guess does not work.
+    </p>
+    <div [hidden] = "guessNotWork">
+    <p>
+      Unfortunately, this guess is not a divisor of 323. But, we now know that {{guessPrime}}, as a prime <br>
+      number, doesn’t share any factors with 323! (aside from 1). This means that according to the math <br>
+      outlined earlier, we can use {{guessPrime}} to generate 2 new guesses (for either a factor or a number that<br>
+      shares a factor) that will be correct around ⅜ of the time!
+    </p>
+    <br>
+  <p>
+    To generate these 2 guesses, we need to find a number P such that {{guessPrime}}^P is a multiple of <br>
+    323 plus one. However, finding this P (especially for numbers larger than 323) is INCREDIBLY hard <br>
+    to do on a normal computer. However, we can use a quantum computer to find this P much more <br>
+    quickly.
+  </p>
+  <button on-click="computePower()" clickable>Click here to calculate P! </button>
+</div>
+<div [hidden] = "hidePowerCalc">
+<p>Our quantum computer tells us that P is {{p}}! Now we use {{guessPrime}}^P/2 + 1 and {{guessPrime}}^P/2 - 1 as <br>
+  our new “guesses.” In other words, let’s plug these numbers and 323 into Euclid’s algorithm and see if we <br>
+  arrive at a factor for 323. <br>
+</p>
+<button on-click="checkGuesses()" clickable>Click here to check if these guesses work! </button>
+</div>
+<div [hidden] = "hideGuessCheck">
+<div [hidden] = "betterGuessNotWorked">
+  <p>The greatest common divisor of {{guessPrime}}^{{p}} {{plusMinus}} and 323 is {{gcf}}! <br>
+    We’ve found a prime factor of 323! If someone used 323 as their public key and RSA, we would be able to<br>
+    decrypt their message using {{gcf}} as our private key.
+  </p>
+  <button on-click="startOver()" clickable>Click here to try with a new prime!</button>
+</div>
+<div [hidden] = "betterGuessWorked">
+  <p>Unfortunately, neither guess worked, but this is not unexpected. However, if we keep trying with new random <br>
+    guesses, we will likely find success!
+  </p>
+  <button on-click="startOver()" clickable>Click here to try with a new prime!</button>
+</div>
+</div>
+
+<router-outlet></router-outlet>
